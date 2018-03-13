@@ -1,6 +1,6 @@
 # Middleware stack and queue
 
-This package provides [Psr-15](https://www.php-fig.org/psr/psr-15/) middleware stack and queue, allowing to group multiple middleware together.
+This package provides classes for [Psr-15](https://www.php-fig.org/psr/psr-15/) middleware stack and queue, allowing to group multiple middleware together.
 
 **Require** php >= 7.0
 
@@ -8,12 +8,12 @@ This package provides [Psr-15](https://www.php-fig.org/psr/psr-15/) middleware s
 
 **Run tests** `./vendor/bin/kahlan`
 
-- [Middleware stack](https://github.com/ellipsephp/middleware#middleware-stack)
-- [Middleware queue](https://github.com/ellipsephp/middleware#middleware-queue)
+- [Middleware stack](#middleware-stack)
+- [Middleware queue](#middleware-queue)
 
 ## Middleware stack
 
-This package provides an `Ellipse\Middleware\MiddlewareStack` class allowing create a middleware processing the request with many middleware in LIFO order.
+This package provides an `Ellipse\Middleware\MiddlewareStack` class allowing create a middleware processing the request using many middleware in LIFO order.
 
 ```php
 <?php
@@ -22,21 +22,16 @@ namespace App;
 
 use Ellipse\Middleware\MiddlewareStack;
 
-// create Psr-15 middleware and request handler.
-$middleware1 = new SomeMiddleware1;
-$middleware2 = new SomeMiddleware2;
-$handler = new SomeHandler;
-
-// Create a middleware stack.
-$stack = new MiddlewareStack([$middleware2, $middleware1]);
+// Create a middleware stack. (LIFO order)
+$stack = new MiddlewareStack([new SomeMiddleware2, new SomeMiddleware1]);
 
 // The request goes through middleware1, middleware2, then hit the request handler.
-$response = $stack->process($request, $handler);
+$response = $stack->process($request, new SomeHandler);
 ```
 
 ## Middleware queue
 
-This package provides an `Ellipse\Middleware\MiddlewareQueue` class allowing create a middleware processing the request with many middleware in FIFO order.
+This package provides an `Ellipse\Middleware\MiddlewareQueue` class allowing create a middleware processing the request using many middleware in FIFO order.
 
 ```php
 <?php
@@ -45,14 +40,9 @@ namespace App;
 
 use Ellipse\Middleware\MiddlewareQueue;
 
-// create Psr-15 middleware and request handler.
-$middleware1 = new SomeMiddleware1;
-$middleware2 = new SomeMiddleware2;
-$handler = new SomeHandler;
-
-// Create a middleware queue.
-$queue = new MiddlewareQueue([$middleware1, $middleware2]);
+// Create a middleware queue. (FIFO order)
+$queue = new MiddlewareQueue([new SomeMiddleware1, new SomeMiddleware2]);
 
 // The request goes through middleware1, middleware2, then hit the request handler.
-$response = $queue->process($request, $handler);
+$response = $queue->process($request, new SomeHandler);
 ```
