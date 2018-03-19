@@ -1,7 +1,5 @@
 <?php
 
-use function Eloquent\Phony\Kahlan\mock;
-
 use Ellipse\Middleware\Exceptions\MiddlewareExceptionInterface;
 use Ellipse\Middleware\Exceptions\MiddlewareTypeException;
 
